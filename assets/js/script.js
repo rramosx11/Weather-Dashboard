@@ -1,3 +1,5 @@
+let date = new Date();
+
 var fiveDay = document.querySelector("#five-day");
 
 var formSubmitHandler = function (event) {
@@ -17,7 +19,7 @@ var getWeather = function (city) {
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     city +
-    "&appid=bda95baec6bc5b56e1a5b8d7e5c95181";
+    "&appid=bda95baec6bc5b56e1a5b8d7e5c95181&units=imperial";
   // make a get request to url
 
   fetch(apiUrl)
@@ -38,6 +40,56 @@ var getWeather = function (city) {
     });
 };
 
-var displayWeather = function () {};
+var displayWeather = function (weatherData) {
+  // format and display the values
+  $("#main-city-name").text(
+    weatherData.name + " " + moment().format("(MMMM/DD/YYYY)")
+  );
+  $("#main-city-temp").text("Temperature: " + weatherData.main.temp + " °F");
+  $("#main-city-wind").text("Wind Speed: " + weatherData.wind.speed + " mph");
+  $("#main-city-humid").text("Humidity: " + weatherData.main.humidity + " %");
+
+  // use lat and lon to make uvi call
+  fetch(
+    "https://api.openweathermap.org/data/2.5/uvi?lat=" +
+      weatherData.coord.lat +
+      "&lon=" +
+      weatherData.coord.lon +
+      "&appid=bda95baec6bc5b56e1a5b8d7e5c95181"
+  ).then(function (response) {
+    response.ok;
+
+    response.json().then(function (data) {
+      $("#main-city-uv").text("UV Index: " + data.value);
+      // highlight the value using the EPA's UV Index Scale colors
+      if (data.value >= 11) {
+        $("#uv-box").css("background-color", "#6c49cb");
+      } else if (data.value < 11 && data.value >= 8) {
+        $("#uv-box").css("background-color", "#d90011");
+      } else if (data.value < 8 && data.value >= 6) {
+        $("#uv-box").css("background-color", "#f95901");
+      } else if (data.value < 6 && data.value >= 3) {
+        $("#uv-box").css("background-color", "#f7e401");
+      } else {
+        $("#uv-box").css("background-color", "#299501");
+      }
+    });
+  });
+  fetch(
+    "https://api.openweathermap.org/data/2.5/forecast?q=" +
+      weatherData.name +
+      "&appid=bda95baec6bc5b56e1a5b8d7e5c95181&units=imperial"
+  ).then(function (response) {
+    response.json().then(function (data) {
+      // clear any previous entries in the five-day forecast
+      $("#five-day").empty();
+
+      // get every 8th value (24hours) in the returned array from the api call
+      for (i = 7; i <= data.list.length; i += 8) {
+        // insert data into my day forecast card template
+      }
+    });
+  });
+};
 
 $("#search-form").submit(formSubmitHandler);
