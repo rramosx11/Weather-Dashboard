@@ -1,7 +1,3 @@
-let date = new Date();
-
-var fiveDay = document.querySelector("#five-day");
-
 var formSubmitHandler = function (event) {
   // stop page from refreshing
   event.preventDefault();
