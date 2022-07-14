@@ -64,7 +64,8 @@ var displayWeather = function (weatherData) {
     response.ok;
 
     response.json().then(function (data) {
-      $("#main-city-uv").text("UV Index: " + data.value);
+      $("#uv-box").text(data.value);
+      //   $("#main-city-uv").text("UV Index: " + data.value);
       // highlight the value using the EPA's UV Index Scale colors
       if (data.value >= 11) {
         $("#uv-box").css("background-color", "#6c49cb");
