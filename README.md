@@ -1,10 +1,4 @@
-# Weather-Dashboard
-
 # 06 Server-Side APIs: Weather Dashboard
-
-Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
-
-Use the [OpenWeather One Call API](https://openweathermap.org/api/one-call-api) to retrieve weather data for cities. Read through the documentation for setup and usage instructions. You will use `localStorage` to store any persistent data.
 
 ## User Story
 
@@ -30,18 +24,12 @@ WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 ```
 
-The following image demonstrates the application functionality:
+## Description
 
-![weather dashboard demo](./Assets/06-server-side-apis-homework-demo.png)
+- The Weather Dashboard app will allow you to view all the weather information for a city by looking it up in the search bar. You will also have your recent searches saved and available to view.
 
-## Review
+## Deployed URL / Screenshot
 
-You are required to submit the following for review:
+https://rramosx11.github.io/Weather-Dashboard/
 
-- The URL of the deployed application.
-
-- The URL of the GitHub repository. Give the repository a unique name and include a high-quality README describing the project.
-
----
-
-© 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+![Screenshot](https://github.com/rramosx11/Weather-Dashboard/blob/develop/assets/images/WeatherDashboard_Screenshot.png)
