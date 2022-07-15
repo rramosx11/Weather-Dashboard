@@ -1,3 +1,6 @@
+var cityHistory = [];
+var recentSearched = "";
+
 var formSubmitHandler = function (event) {
   // stop page from refreshing
   event.preventDefault();
@@ -101,16 +104,84 @@ var displayWeather = function (weatherData) {
           data.list[i].weather[0].icon +
           ".png' alt =''><p class='card-text'>Temperature: " +
           data.list[i].main.temp +
+          " °F" +
           "</p><p class='card-text'>Wind: " +
           data.list[i].wind.speed +
+          " MPH" +
           "</p><p class='card-text'>Humidity: " +
           data.list[i].main.humidity +
+          " %" +
           "</p></div></div>";
         // append to five day forecast
         $("#five-day").append(fiveDayCard);
       }
     });
   });
+
+  recentSearched = weatherData.name;
+
+  saveCity(weatherData.name);
 };
 
+var saveCity = function (city) {
+  if (!cityHistory.includes(city)) {
+    cityHistory.push(city);
+    $("#search-history").append(
+      "<a href='#' class='list-group-item list-group-item-action' id='" +
+        city +
+        "'>" +
+        city +
+        "</a>"
+    );
+  }
+  localStorage.setItem("weathercityHistory", JSON.stringify(cityHistory));
+  localStorage.setItem("recentSearched", JSON.stringify(recentSearched));
+
+  //display city history array
+  loadCityHistory();
+};
+
+var loadCityHistory = function () {
+  cityHistory = JSON.parse(localStorage.getItem("weathercityHistory"));
+  recentSearched = JSON.parse(localStorage.getItem("recentSearched"));
+
+  // if nothing in localStorage, create an empty cityHistory array and an empty recentSearched string
+  if (!cityHistory) {
+    cityHistory = [];
+  }
+
+  if (!recentSearched) {
+    recentSearched = "";
+  }
+
+  // clear any previous values from th search-history ul
+  $("#search-history").empty();
+
+  // for loop that will run through all the citys found in the array
+  for (i = 0; i < cityHistory.length; i++) {
+    // add the city as a link, set it's id, and append it to the search-history ul
+    $("#search-history").append(
+      "<a href='#' class='list-group-item list-group-item-action' id='" +
+        cityHistory[i] +
+        "'>" +
+        cityHistory[i] +
+        "</a>"
+    );
+  }
+};
+
+// load search history from local storage
+loadCityHistory();
+
+// start page with the last city searched if there is one
+if (recentSearched != "") {
+  getWeather(recentSearched);
+}
+
 $("#search-form").submit(formSubmitHandler);
+$("#search-history").on("click", function (event) {
+  // get the links id value
+  let prevCity = $(event.target).closest("a").attr("id");
+  // pass it's id value to the getCityWeather function
+  getWeather(prevCity);
+});
